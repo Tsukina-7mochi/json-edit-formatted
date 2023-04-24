@@ -1,6 +1,6 @@
 # JSON editor library preserving formats
 
-A library for editing content while maintaining the JSON format
+A library for editing JSON content while maintaining the its format
 
 ## Usage
 
