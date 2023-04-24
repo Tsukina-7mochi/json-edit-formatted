@@ -1,10 +1,10 @@
 import { JSONSymbol, JSONSymbolType } from "./parser.ts";
 
-const replaceJsonValue = function(jsonAST: JSONSymbol<'json-text'>, path: (string | number)[], rawValue: string) {
-  if(typeof jsonAST.children[1] === 'string') {
+const replaceJsonValue = function(jsonTree: JSONSymbol<'json-text'>, path: (string | number)[], rawValue: string) {
+  if(typeof jsonTree.children[1] === 'string') {
     throw Error('input JSON AST is invalid');
   }
-  let symbol: JSONSymbol<JSONSymbolType> = jsonAST.children[1];
+  let symbol: JSONSymbol<JSONSymbolType> = jsonTree.children[1];
 
   for(const key_ of path) {
     if(symbol.type !== 'object' && symbol.type !== 'array') {
@@ -76,7 +76,7 @@ const replaceJsonValue = function(jsonAST: JSONSymbol<'json-text'>, path: (strin
 
   symbol.children = [rawValue];
 
-  return jsonAST;
+  return jsonTree;
 }
 
 export {

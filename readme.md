@@ -19,10 +19,10 @@ const value = `{
 `;
 
 const parser = new JSONParser(value);
-const jsonAST = parser.parseJsonText();
-replaceJsonValue(jsonAST, ['keys', 'key1', 'value2'], '-1')
-replaceJsonValue(jsonAST, ['keys', 'key2', 1], '"X"')
-replaceJsonValue(jsonAST, ['text'], '"bar"')
+const jsonTree = parser.parseJsonText();
+replaceJsonValue(jsonTree, ['keys', 'key1', 'value2'], '-1')
+replaceJsonValue(jsonTree, ['keys', 'key2', 1], '"X"')
+replaceJsonValue(jsonTree, ['text'], '"bar"')
 
 console.log(jsonAST.stringify());
 // ->
