@@ -1,4 +1,4 @@
-import { JSONParser, replaceJsonValue } from '../mod.ts';
+import { JSONParser, replaceJSONValue } from '../mod.ts';
 
 const value = `{
   "keys": {
@@ -15,8 +15,8 @@ const value = `{
 
 const parser = new JSONParser(value);
 const jsonTree = parser.parseJsonText();
-replaceJsonValue(jsonTree, ['keys', 'key1', 'value2'], '-1');
-replaceJsonValue(jsonTree, ['keys', 'key2', 1], '"X"');
-replaceJsonValue(jsonTree, ['text'], '"bar"');
+replaceJSONValue(jsonTree, ['keys', 'key1', 'value2'], '-1');
+replaceJSONValue(jsonTree, ['keys', 'key2', 1], '"X"');
+replaceJSONValue(jsonTree, ['text'], '"bar"');
 
 console.log(jsonTree.stringify());

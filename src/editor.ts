@@ -1,6 +1,6 @@
 import { JSONSymbol, JSONSymbolType } from './parser.ts';
 
-const replaceJsonValue = function (
+const replaceJSONValue = function (
   jsonTree: JSONSymbol<'json-text'>,
   path: (string | number)[],
   rawValue: string,
@@ -90,4 +90,4 @@ const replaceJsonValue = function (
   return jsonTree;
 };
 
-export { replaceJsonValue };
+export { replaceJSONValue };
