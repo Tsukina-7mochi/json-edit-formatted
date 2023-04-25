@@ -50,12 +50,6 @@ class JSONParser {
     this.text = text;
   }
 
-  #assertText(actual: string, expected: string) {
-    if (actual !== expected) {
-      throw Error(`at ${this.index}: ${expected} expected, got ${actual}`);
-    }
-  }
-
   #takeChar() {
     if (this.index >= this.text.length) {
       throw Error('Unexpected end of data');
