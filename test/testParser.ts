@@ -1,5 +1,7 @@
 import { JSONParser, JSONSymbol } from '../mod.ts';
-import { assertEquals } from 'https://deno.land/std@0.184.0/testing/asserts.ts';
+import { asserts } from './deps.ts';
+
+const assertEquals = asserts.assertEquals;
 
 Deno.test('[JSONSymbol] stringify #1', () => {
   const symbol = new JSONSymbol('string', ['a', 'b', 'c']);
