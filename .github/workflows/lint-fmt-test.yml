@@ -1,0 +1,25 @@
+name: lint, check format and test
+
+on: push
+
+jobs:
+  lint-fmt-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Run tests
+        run: deno test -A
+
+      - name: Lint
+        run: deno lint
+
+      - name: Check format
+        run: deno fmt --check
