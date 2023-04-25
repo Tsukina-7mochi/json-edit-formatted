@@ -1,9 +1,8 @@
 import { JSONSymbol, JSONSymbolType } from './parser.ts';
 
-const replaceJSONValue = function (
+const getJSONSymbolFromPath = function (
   jsonTree: JSONSymbol<'json-text'>,
   path: (string | number)[],
-  rawValue: string,
 ) {
   if (typeof jsonTree.children[1] === 'string') {
     throw Error('input JSON AST is invalid');
@@ -78,11 +77,41 @@ const replaceJSONValue = function (
     }
   }
 
+  return symbol;
+};
+
+const getJSONValue = function (
+  jsonTree: JSONSymbol<'json-text'>,
+  path: (string | number)[],
+) {
+  const symbol = getJSONSymbolFromPath(jsonTree, path);
+
   if (
     symbol.type !== 'literal' && symbol.type !== 'string' &&
     symbol.type !== 'number'
   ) {
-    throw Error(`symbol to replace must be value, not ${symbol.type}`);
+    throw Error(
+      `symbol is not a literal, string or number (${symbol.type}); use getJSONSymbolFromPath instead`,
+    );
+  }
+
+  return symbol.stringify();
+};
+
+const replaceJSONValue = function (
+  jsonTree: JSONSymbol<'json-text'>,
+  path: (string | number)[],
+  rawValue: string,
+) {
+  const symbol = getJSONSymbolFromPath(jsonTree, path);
+
+  if (
+    symbol.type !== 'literal' && symbol.type !== 'string' &&
+    symbol.type !== 'number'
+  ) {
+    throw Error(
+      `symbol to replace must be literal, string or number, not ${symbol.type}`,
+    );
   }
 
   symbol.children = [rawValue];
@@ -90,4 +119,4 @@ const replaceJSONValue = function (
   return jsonTree;
 };
 
-export { replaceJSONValue };
+export { getJSONSymbolFromPath, getJSONValue, replaceJSONValue };
