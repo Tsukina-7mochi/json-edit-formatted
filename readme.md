@@ -5,6 +5,11 @@ A library for editing JSON content while maintaining the its format
 ## Usage
 
 ```typescript
+import {
+  JSONParser,
+  replaceJSONValue,
+} from 'https://raw.githubusercontent.com/Tsukina-7mochi/json-edit-formatted/{version}/mod.ts';
+
 const value = `{
   "keys": {
     "key1": {
@@ -18,13 +23,12 @@ const value = `{
 }
 `;
 
-const parser = new JSONParser(value);
-const jsonTree = parser.parseJsonText();
-replaceJsonValue(jsonTree, ['keys', 'key1', 'value2'], '-1');
-replaceJsonValue(jsonTree, ['keys', 'key2', 1], '"X"');
-replaceJsonValue(jsonTree, ['text'], '"bar"');
+const jsonTree = JSONParser.parse(value);
+replaceJSONValue(jsonTree, ['keys', 'key1', 'value2'], '-1');
+replaceJSONValue(jsonTree, ['keys', 'key2', 1], '"X"');
+replaceJSONValue(jsonTree, ['text'], '"bar"');
 
-console.log(jsonAST.stringify());
+console.log(jsonTree.stringify());
 // ->
 // {
 //   "keys": {

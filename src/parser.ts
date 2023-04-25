@@ -46,6 +46,11 @@ class JSONParser {
   index = 0;
   text: string;
 
+  static parse(text: string) {
+    const parser = new JSONParser(text);
+    return parser.parseJsonText();
+  }
+
   constructor(text: string) {
     this.text = text;
   }

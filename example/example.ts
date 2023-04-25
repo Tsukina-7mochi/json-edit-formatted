@@ -13,8 +13,7 @@ const value = `{
 }
 `;
 
-const parser = new JSONParser(value);
-const jsonTree = parser.parseJsonText();
+const jsonTree = JSONParser.parse(value);
 replaceJSONValue(jsonTree, ['keys', 'key1', 'value2'], '-1');
 replaceJSONValue(jsonTree, ['keys', 'key2', 1], '"X"');
 replaceJSONValue(jsonTree, ['text'], '"bar"');
