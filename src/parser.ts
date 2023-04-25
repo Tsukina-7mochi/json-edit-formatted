@@ -1,20 +1,20 @@
 // reference: RFC 8259
 
 type JSONSymbolType =
-  | "json-text"
-  | "begin-array"
-  | "begin-object"
-  | "end-array"
-  | "end-object"
-  | "name-separator"
-  | "value-separator"
-  | "ws"
-  | "literal"
-  | "object"
-  | "member"
-  | "array"
-  | "number"
-  | "string";
+  | 'json-text'
+  | 'begin-array'
+  | 'begin-object'
+  | 'end-array'
+  | 'end-object'
+  | 'name-separator'
+  | 'value-separator'
+  | 'ws'
+  | 'literal'
+  | 'object'
+  | 'member'
+  | 'array'
+  | 'number'
+  | 'string';
 
 class JSONSymbol<T extends JSONSymbolType> {
   type: T;
@@ -22,7 +22,7 @@ class JSONSymbol<T extends JSONSymbolType> {
 
   constructor(
     type: T,
-    children: JSONSymbol<T>["children"],
+    children: JSONSymbol<T>['children'],
   ) {
     this.type = type;
     this.children = children;
@@ -30,11 +30,11 @@ class JSONSymbol<T extends JSONSymbolType> {
 
   stringify(): string {
     return this.children.map((v) => {
-      if (typeof v === "string") {
+      if (typeof v === 'string') {
         return v;
       }
       return v.stringify();
-    }).join("");
+    }).join('');
   }
 }
 
@@ -58,7 +58,7 @@ class JSONParser {
 
   #takeChar() {
     if (this.index >= this.text.length) {
-      throw Error("Unexpected end of data");
+      throw Error('Unexpected end of data');
     }
     const letter = this.text[this.index];
     this.index += 1;
@@ -87,7 +87,7 @@ class JSONParser {
     ]);
   }
 
-  parseJsonText(): JSONSymbol<"json-text"> {
+  parseJsonText(): JSONSymbol<'json-text'> {
     const leadingWs = this.parseWs();
 
     const objectOrArray = this.parseObject() ?? this.parseArray();
@@ -97,53 +97,53 @@ class JSONParser {
 
     const followingWs = this.parseWs();
 
-    return new JSONSymbol("json-text", [leadingWs, objectOrArray, followingWs]);
+    return new JSONSymbol('json-text', [leadingWs, objectOrArray, followingWs]);
   }
 
-  parseBeginArray(): JSONSymbol<"begin-array"> | null {
-    return this.#parseWsLetter("begin-array", "[");
+  parseBeginArray(): JSONSymbol<'begin-array'> | null {
+    return this.#parseWsLetter('begin-array', '[');
   }
 
-  parseBeginObject(): JSONSymbol<"begin-object"> | null {
-    return this.#parseWsLetter("begin-object", "{");
+  parseBeginObject(): JSONSymbol<'begin-object'> | null {
+    return this.#parseWsLetter('begin-object', '{');
   }
 
-  parseEndArray(): JSONSymbol<"end-array"> | null {
-    return this.#parseWsLetter("end-array", "]");
+  parseEndArray(): JSONSymbol<'end-array'> | null {
+    return this.#parseWsLetter('end-array', ']');
   }
 
-  parseEndObject(): JSONSymbol<"end-object"> | null {
-    return this.#parseWsLetter("end-object", "}");
+  parseEndObject(): JSONSymbol<'end-object'> | null {
+    return this.#parseWsLetter('end-object', '}');
   }
 
-  parseNameSeparator(): JSONSymbol<"name-separator"> | null {
-    return this.#parseWsLetter("name-separator", ":");
+  parseNameSeparator(): JSONSymbol<'name-separator'> | null {
+    return this.#parseWsLetter('name-separator', ':');
   }
 
-  parseValueSeparator(): JSONSymbol<"value-separator"> | null {
-    return this.#parseWsLetter("value-separator", ",");
+  parseValueSeparator(): JSONSymbol<'value-separator'> | null {
+    return this.#parseWsLetter('value-separator', ',');
   }
 
-  parseWs(): JSONSymbol<"ws"> {
+  parseWs(): JSONSymbol<'ws'> {
     wsRegExp.lastIndex = this.index;
-    const value = this.text.match(wsRegExp)?.[0] ?? "";
+    const value = this.text.match(wsRegExp)?.[0] ?? '';
     this.index += value.length;
 
-    return new JSONSymbol("ws", [value]);
+    return new JSONSymbol('ws', [value]);
   }
 
-  parseLiteral(): JSONSymbol<"literal"> | null {
+  parseLiteral(): JSONSymbol<'literal'> | null {
     literalRegExp.lastIndex = this.index;
     const value = this.text.match(literalRegExp)?.[0];
-    if (typeof value !== "string") {
+    if (typeof value !== 'string') {
       return null;
     }
 
-    return new JSONSymbol("literal", [value]);
+    return new JSONSymbol('literal', [value]);
   }
 
   parseValue():
-    | JSONSymbol<"literal" | "object" | "array" | "number" | "string">
+    | JSONSymbol<'literal' | 'object' | 'array' | 'number' | 'string'>
     | null {
     const literalSymbol = this.parseLiteral();
     if (literalSymbol !== null) {
@@ -173,7 +173,7 @@ class JSONParser {
     return null;
   }
 
-  parseObject(): JSONSymbol<"object"> | null {
+  parseObject(): JSONSymbol<'object'> | null {
     const children = [];
     const beginObject = this.parseBeginObject();
     if (beginObject === null) {
@@ -191,7 +191,7 @@ class JSONParser {
       }
 
       children.push(endObject);
-      return new JSONSymbol("object", children);
+      return new JSONSymbol('object', children);
     }
     children.push(member);
 
@@ -220,10 +220,10 @@ class JSONParser {
       }
     }
 
-    return new JSONSymbol("object", children);
+    return new JSONSymbol('object', children);
   }
 
-  parseMember(): JSONSymbol<"member"> | null {
+  parseMember(): JSONSymbol<'member'> | null {
     const string = this.parseString();
     if (string === null) {
       return null;
@@ -241,10 +241,10 @@ class JSONParser {
       );
     }
 
-    return new JSONSymbol("member", [string, nameSeparator, value]);
+    return new JSONSymbol('member', [string, nameSeparator, value]);
   }
 
-  parseArray(): JSONSymbol<"array"> | null {
+  parseArray(): JSONSymbol<'array'> | null {
     const children = [];
     const beginArray = this.parseBeginArray();
     if (beginArray === null) {
@@ -262,7 +262,7 @@ class JSONParser {
       }
 
       children.push(endArray);
-      return new JSONSymbol("array", children);
+      return new JSONSymbol('array', children);
     }
     children.push(value);
 
@@ -289,21 +289,21 @@ class JSONParser {
       }
     }
 
-    return new JSONSymbol("array", children);
+    return new JSONSymbol('array', children);
   }
 
-  parseNumber(): JSONSymbol<"number"> | null {
+  parseNumber(): JSONSymbol<'number'> | null {
     numberRegExp.lastIndex = this.index;
     const value = this.text.match(numberRegExp)?.[0];
-    if (typeof value !== "string") {
+    if (typeof value !== 'string') {
       return null;
     }
     this.index += value.length;
 
-    return new JSONSymbol("number", [value]);
+    return new JSONSymbol('number', [value]);
   }
 
-  parseString(): JSONSymbol<"string"> | null {
+  parseString(): JSONSymbol<'string'> | null {
     if (this.text[this.index] !== '"') {
       return null;
     }
@@ -324,13 +324,13 @@ class JSONParser {
         if (char === '"') {
           break;
         }
-        if (char === "\\") {
+        if (char === '\\') {
           escaped = true;
         }
       }
     }
 
-    return new JSONSymbol("string", [value]);
+    return new JSONSymbol('string', [value]);
   }
 }
 
