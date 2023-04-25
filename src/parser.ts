@@ -40,7 +40,7 @@ class JSONSymbol<T extends JSONSymbolType> {
 
 const wsRegExp = /[ \t\r\n]*/y;
 const literalRegExp = /(false|null|true)/y;
-const numberRegExp = /-?(0|[1-9]\d*)(\.\d+)?([eE]][+\-]?\d+)?/y;
+const numberRegExp = /-?(0|[1-9]\d*)(\.\d+)?([eE][+\-]?\d+)?/y;
 
 class JSONParser {
   index = 0;
@@ -132,6 +132,7 @@ class JSONParser {
     if (typeof value !== 'string') {
       return null;
     }
+    this.index += value.length;
 
     return new JSONSymbol('literal', [value]);
   }
